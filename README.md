@@ -4,7 +4,7 @@ Promises are great, but they have annoying boilerplate in ES6.
 Chaining together `.then` calls gets messy quickly.
 
 ES7 offers a cleaner syntax using `async` / `await`. This is a demo
-of how to setup Truffle to use this syntax.
+of how to set up Truffle to use this syntax when testing contracts.
 
 
 ### Changes
@@ -18,7 +18,9 @@ of how to setup Truffle to use this syntax.
 
 ### Outcomes
 
-Look at the source to see fully.
+Look at [test/metacoin.js][tests] to see fully.
+
+[tests]: https://github.com/aaren/truffle-async/blob/master/test/metacoin.js
 
 Without `await`:
 

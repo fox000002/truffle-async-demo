@@ -1,30 +1,27 @@
 require('babel-polyfill')
 
 contract('MetaCoin', function(accounts) {
-  it("should put 10000 MetaCoin in the first account", function(done) {
+  it("should put 10000 MetaCoin in the first account", async function() {
     var meta = MetaCoin.deployed();
-
-    meta.getBalance.call(accounts[0]).then(function(balance) {
-      assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
-    }).then(done).catch(done);
+    var balance = await meta.getBalance.call(accounts[0]);
+    assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
   });
-  it("should call a function that depends on a linked library  ", function(done){
+
+  it("should call a function that depends on a linked library  ", async function() {
     var meta = MetaCoin.deployed();
     var metaCoinBalance;
     var metaCoinEthBalance;
 
-    meta.getBalance.call(accounts[0]).then(function(outCoinBalance){
-      metaCoinBalance = outCoinBalance.toNumber();
-      return meta.getBalanceInEth.call(accounts[0]);
-    }).then(function(outCoinBalanceEth){
-      metaCoinEthBalance = outCoinBalanceEth.toNumber();
-      
-    }).then(function(){
-      assert.equal(metaCoinEthBalance,2*metaCoinBalance,"Library function returned unexpeced function, linkage may be broken");
-      
-    }).then(done).catch(done);
+    var outCoinBalance = await meta.getBalance.call(accounts[0]);
+    metaCoinBalance = outCoinBalance.toNumber();
+
+    var outCoinBalanceEth = await meta.getBalanceInEth.call(accounts[0]);
+    metaCoinEthBalance = outCoinBalanceEth.toNumber();
+
+    assert.equal(metaCoinEthBalance,2*metaCoinBalance,"Library function returned unexpeced function, linkage may be broken");
   });
-  it("should send coin correctly", function(done) {
+
+  it("should send coin correctly", async function() {
     var meta = MetaCoin.deployed();
 
     // Get initial balances of first and second account.
@@ -38,22 +35,20 @@ contract('MetaCoin', function(accounts) {
 
     var amount = 10;
 
-    meta.getBalance.call(account_one).then(function(balance) {
-      account_one_starting_balance = balance.toNumber();
-      return meta.getBalance.call(account_two);
-    }).then(function(balance) {
-      account_two_starting_balance = balance.toNumber();
-      return meta.sendCoin(account_two, amount, {from: account_one});
-    }).then(function() {
-      return meta.getBalance.call(account_one);
-    }).then(function(balance) {
-      account_one_ending_balance = balance.toNumber();
-      return meta.getBalance.call(account_two);
-    }).then(function(balance) {
-      account_two_ending_balance = balance.toNumber();
+    var balance = await meta.getBalance.call(account_one);
+    account_one_starting_balance = balance.toNumber();
 
-      assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
-      assert.equal(account_two_ending_balance, account_two_starting_balance + amount, "Amount wasn't correctly sent to the receiver");
-    }).then(done).catch(done);
+    var balance = await meta.getBalance.call(account_two);
+    account_two_starting_balance = balance.toNumber();
+    await meta.sendCoin(account_two, amount, {from: account_one});
+
+    var balance = await meta.getBalance.call(account_one);
+    account_one_ending_balance = balance.toNumber();
+
+    var balance = await meta.getBalance.call(account_two);
+    account_two_ending_balance = balance.toNumber();
+
+    assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
+    assert.equal(account_two_ending_balance, account_two_starting_balance + amount, "Amount wasn't correctly sent to the receiver");
   });
 });

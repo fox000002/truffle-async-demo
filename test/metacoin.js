@@ -1,27 +1,25 @@
-require('babel-polyfill')
-
 contract('MetaCoin', function(accounts) {
-  it("should put 10000 MetaCoin in the first account", async function() {
+  it("should put 10000 MetaCoin in the first account", function() {
     var meta = MetaCoin.deployed();
-    var balance = await meta.getBalance.call(accounts[0]);
+    var balance = meta.getBalance.call(accounts[0]);
     assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
   });
 
-  it("should call a function that depends on a linked library  ", async function() {
+  it("should call a function that depends on a linked library  ", function() {
     var meta = MetaCoin.deployed();
     var metaCoinBalance;
     var metaCoinEthBalance;
 
-    var outCoinBalance = await meta.getBalance.call(accounts[0]);
+    var outCoinBalance = meta.getBalance.call(accounts[0]);
     metaCoinBalance = outCoinBalance.toNumber();
 
-    var outCoinBalanceEth = await meta.getBalanceInEth.call(accounts[0]);
+    var outCoinBalanceEth = meta.getBalanceInEth.call(accounts[0]);
     metaCoinEthBalance = outCoinBalanceEth.toNumber();
 
     assert.equal(metaCoinEthBalance,2*metaCoinBalance,"Library function returned unexpeced function, linkage may be broken");
   });
 
-  it("should send coin correctly", async function() {
+  it("should send coin correctly", function() {
     var meta = MetaCoin.deployed();
 
     // Get initial balances of first and second account.
@@ -35,17 +33,17 @@ contract('MetaCoin', function(accounts) {
 
     var amount = 10;
 
-    var balance = await meta.getBalance.call(account_one);
+    var balance = meta.getBalance.call(account_one);
     account_one_starting_balance = balance.toNumber();
 
-    var balance = await meta.getBalance.call(account_two);
+    var balance = meta.getBalance.call(account_two);
     account_two_starting_balance = balance.toNumber();
-    await meta.sendCoin(account_two, amount, {from: account_one});
+    meta.sendCoin(account_two, amount, {from: account_one});
 
-    var balance = await meta.getBalance.call(account_one);
+    var balance = meta.getBalance.call(account_one);
     account_one_ending_balance = balance.toNumber();
 
-    var balance = await meta.getBalance.call(account_two);
+    var balance = meta.getBalance.call(account_two);
     account_two_ending_balance = balance.toNumber();
 
     assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");

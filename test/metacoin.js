@@ -1,14 +1,14 @@
-require('babel-polyfill')
+var MetaCoin = artifacts.require("MetaCoin");
 
 contract('MetaCoin', function(accounts) {
   it("should put 10000 MetaCoin in the first account", async function() {
-    var meta = MetaCoin.deployed();
+    var meta = await MetaCoin.deployed();
     var balance = await meta.getBalance.call(accounts[0]);
     assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
   });
 
   it("should call a function that depends on a linked library  ", async function() {
-    var meta = MetaCoin.deployed();
+    var meta = await MetaCoin.deployed();
     var metaCoinBalance;
     var metaCoinEthBalance;
 
@@ -22,7 +22,7 @@ contract('MetaCoin', function(accounts) {
   });
 
   it("should send coin correctly", async function() {
-    var meta = MetaCoin.deployed();
+    var meta = await MetaCoin.deployed();
 
     // Get initial balances of first and second account.
     var account_one = accounts[0];

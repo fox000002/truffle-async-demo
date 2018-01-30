@@ -21,13 +21,13 @@ App = {
   },
 
   initContract: function() {
-    $.getJSON('TutorialToken.json', function(data) {
+    $.getJSON('MetaCoin.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract.
-      var TutorialTokenArtifact = data;
-      App.contracts.TutorialToken = TruffleContract(TutorialTokenArtifact);
+      var MetaCoinArtifact = data;
+      App.contracts.MetaCoin= TruffleContract(MetaCoinArtifact);
 
       // Set the provider for our contract.
-      App.contracts.TutorialToken.setProvider(App.web3Provider);
+      App.contracts.MetaCoin.setProvider(App.web3Provider);
 
       // Use our contract to retieve and mark the adopted pets.
       return App.getBalances();
@@ -48,7 +48,7 @@ App = {
 
     console.log('Transfer ' + amount + ' TT to ' + toAddress);
 
-    var tutorialTokenInstance;
+    var metaCoinInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
@@ -57,12 +57,12 @@ App = {
 
       var account = accounts[0];
 
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
+      App.contracts.MetaCoin.deployed().then(function(instance) {
+        metaCoinInstance = instance;
 
-        return tutorialTokenInstance.transfer(toAddress, amount, {from: account});
+        return metaCoinInstance.sendCoin(toAddress, amount, {from: account});
       }).then(function(result) {
-        alert('Transfer Successful!');
+        console.log('Transfer Successful!');
         return App.getBalances();
       }).catch(function(err) {
         console.log(err.message);
@@ -73,7 +73,7 @@ App = {
   getBalances: function(adopters, account) {
     console.log('Getting balances...');
 
-    var tutorialTokenInstance;
+    var metaCoinInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
@@ -82,14 +82,15 @@ App = {
 
       var account = accounts[0];
 
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
+      App.contracts.MetaCoin.deployed().then(function(instance) {
+        metaCoinInstance = instance;
 
-        return tutorialTokenInstance.balanceOf(account);
+        return metaCoinInstance.getBalance(account);
       }).then(function(result) {
         balance = result.c[0];
 
         $('#TTBalance').text(balance);
+        console.log(balance);
       }).catch(function(err) {
         console.log(err.message);
       });

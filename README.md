@@ -67,3 +67,12 @@ Compiling ./contracts/Migrations.sol...
 
   3 passing (525ms)
 ```
+
+- Run the dev server
+
+```bash
+$ npm install
+$ npm run dev
+```
+
+![screenshot](https://github.com/fox000002/truffle-async-demo/blob/master/doc/screenshot.png?raw=true)

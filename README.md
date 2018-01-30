@@ -11,7 +11,7 @@ of how to set up Truffle to use this syntax when testing contracts.
 
 Look at [test/metacoin.js][tests] to see fully.
 
-[tests]: https://github.com/aaren/truffle-async/blob/master/test/metacoin.js
+[tests]: https://github.com/fox000002/truffle-async-demo/blob/master/test/metacoin.js
 
 Without `await`:
 
@@ -38,3 +38,32 @@ it("should put 10000 MetaCoin in the first account", async function() {
 `await` allows us to write asynchronous code that looks synchronous.
 Big win for readability.
 
+### How to run
+
+- Install node.js v8+
+
+- Install truffle
+
+```bash
+$ npm install -g truffle
+```
+
+- Run [Ganache](http://truffleframework.com/ganache/)
+
+- Run tests
+
+```bash
+$ truffle test
+Compiling ./contracts/ConvertLib.sol...
+Compiling ./contracts/MetaCoin.sol...
+Compiling ./contracts/Migrations.sol...
+
+
+  Contract: MetaCoin
+    ✓ should put 10000 MetaCoin in the first account (46ms)
+    ✓ should call a function that depends on a linked library   (120ms)
+    ✓ should send coin correctly (134ms)
+
+
+  3 passing (525ms)
+```

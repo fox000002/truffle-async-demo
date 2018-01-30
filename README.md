@@ -3,17 +3,8 @@
 Promises are great, but they have annoying boilerplate in ES6.
 Chaining together `.then` calls gets messy quickly.
 
-ES7 offers a cleaner syntax using `async` / `await`. This is a demo
+Latest stable version v8.x of Node.JS offers a cleaner syntax using `async` / `await`. This is a demo
 of how to set up Truffle to use this syntax when testing contracts.
-
-
-### Changes
-
-1. Configure babel with `.babelrc`
-
-2. Install babel dependencies with `npm install` (using `package.json`).
-
-3. `require('babel-polyfill')` at the top of the test file.
 
 
 ### Outcomes
@@ -47,13 +38,3 @@ it("should put 10000 MetaCoin in the first account", async function() {
 `await` allows us to write asynchronous code that looks synchronous.
 Big win for readability.
 
-
-### Questions
-
-1. Can we get Mocha to insert 'babel-polyfill' on the fly in
-   Truffle?
-
-2. Can we avoid installing the dependencies and just use the Truffle
-   libs?
-
-3. Do we need `.babelrc`?
